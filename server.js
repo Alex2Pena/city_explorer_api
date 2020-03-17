@@ -19,35 +19,34 @@ app.get('/location', (request, response) => {
   // this is the city that the front end is sending us in the qurey
   // the query lives in the url after the ? htt://cooldomain.com?city=seattle
   try{
-
-
     let city = request.query.city;
     console.log('😎', city);
     let geo = require('./data/geo.json');
-
-    // find information on that city and send it back to the front end
-    // {
-    //   "search_query": "seattle",
-    //   "formatted_query": "Seattle, WA, USA",
-    //   "latitude": "47.606210",
-    //   "longitude": "-122.332071"
-    // }
-
-    let location = new Location(geo[0], city)
-
-    // let dataObj = {
-    //   search_query: city,
-    //   formatted_query: geo[0].display_name,
-    //   latitude: geo[0].lat,
-    //   longitude: geo[0].lon
-    // }
-
+    let location = new Location(geo[0], city);
     response.send(location);
   }
   catch(err){
     console.error(err);
   }
-})
+});
+
+app.get('/weather', (request, response) => {
+  let weather = [];
+  let day = require('./data/darksky.json');
+  day.daily.data.forEach(forecast => {
+    weather.push(new Weather(forecast));
+  });
+  response.status(200).json(weather);
+});
+
+function Weather(obj){
+  this.forecast = obj.summary;
+  this.time = new Date(obj.time * 1000).toString().slice(0,15);
+}
+
+
+
+
 
 function Location(obj, city){
   this.search_query = city;
@@ -56,11 +55,11 @@ function Location(obj, city){
   this.longitude = obj.lon;
 }
 
-app.get('*', (request, response) => {
-  response.status(404).send('there is nothing on this page');
-})
+// app.get('*', (request, response) => {
+//   response.status(404).send('there is nothing on this page');
+// });
 
 // turn on the server
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`);
-})
+});
