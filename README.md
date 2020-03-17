@@ -13,10 +13,10 @@
 <!-- Within the Node, I will be setting up the server files using Express -->
 
 ## Change Log
-<!-- As of Feb 18 10:00 am I have added all necessary files -->
+<!-- As of March 17 09:30 am I have added all necessary files -->
 
 ## Credits and Collaborations
-<!-- Today Andrew Casper is my pair programming partner -->
+<!-- Today Jesse Pena is my pair programming partner -->
 -->
 
 
@@ -34,21 +34,21 @@ ________________________________________________________________________________
 
 Number and name of feature: Lab: 07 - .map
 
-Estimate of time needed to complete: 5 hrs
+Estimate of time needed to complete: 
 
-Start time: 10:00:00
+Start time: 
 
-Finish time: 10:00:00 following  day
+Finish time: 
 
-Actual time needed to complete: 6 hrs
+Actual time needed to complete: 
 
 ____________________________________________________________________________________________
 
 Number and name of feature: Lab: Lab: 08 - Persistence with a SQL Database
 
-Estimate of time needed to complete: 5 hrs
+Estimate of time needed to complete: 
 
-Start time: 10:00:00
+Start time: 
 
 Finish time: 
 
