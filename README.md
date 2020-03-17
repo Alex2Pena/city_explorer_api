@@ -16,7 +16,7 @@
 <!-- As of March 17 09:30 am I have added all necessary files -->
 
 ## Credits and Collaborations
-<!-- Today Jesse Pena is my pair programming partner -->
+<!-- Today Jesse Pena is my pair programming partner. Chance Harmon also helped with the weather trello card -->
 -->
 
 
@@ -24,11 +24,11 @@ Number and name of feature: Lab: 06 - Node, npm, and Expres
 
 Estimate of time needed to complete: 3 hrs
 
-Start time: 09:30:00
+Start time: 09:00:00
 
-Finish time: 14:00:00
+Finish time: 12:00:00
 
-Actual time needed to complete: 04:30:00
+Actual time needed to complete: 03:00:00
 
 ___________________________________________________________________________________________
 

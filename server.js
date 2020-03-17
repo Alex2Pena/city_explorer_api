@@ -45,9 +45,6 @@ function Weather(obj){
 }
 
 
-
-
-
 function Location(obj, city){
   this.search_query = city;
   this.formatted_query = obj.display_name;
