@@ -76,10 +76,12 @@ function Location(obj, city){
   this.latitude = obj.lat;
   this.longitude = obj.lon;
 }
+
 function Weather(obj){
   this.forecast = obj.summary;
   this.time = new Date(obj.time * 1000).toString().slice(0,15);
 }
+
 function Trail(obj){
   this.name = obj.name;
   this.location = obj.location;
