@@ -1,34 +1,47 @@
 'use strict';
 
+// requires the variables from our hiding place
+require('dotenv').config();
+
+const express = require('express');
+// my server
+const app = express();
 //libraries
 
-// my server
-const express = require('express');
-const app = express();
 
-// gets the variables from our hiding place
-require('dotenv').config();
 
 // the underpaid security guard
 const cors = require('cors');
 app.use(cors());
 
+const pg = require('pg');
+
 const PORT = process.env.PORT || 3001;
 const superagent = require('superagent');
-
+const client = new pg.Client(process.env.DATABASE_URL);
 
 app.get('/location', (request, response) => {
   // this is the city that the front end is sending us in the qurey
   // the query lives in the url after the ? htt://cooldomain.com?city=seattle
   let city = request.query.city;
-  console.log('😎', city);
-  let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${city}&format=json`;
-  superagent.get(url)
+  let sql = 'SELECT * FROM locations WHERE search_query=$1;';
+  let safeValues = [city];
+  console.log('searched city:', city);
+  client.query(sql,safeValues)
     .then(results => {
-      // let geoData = results.body;
-      let location = new Location(results.body[0], city);
-      response.status(200).send(location);
-    }).catch(err => console.error(err));
+      if(results.rows.length > 0){
+        console.log('found city in DB:', city);
+        response.send(results.rows[0]);
+      }else {
+        console.log('did NOT find city in DB:', city);
+        let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${city}&format=json`;
+        superagent.get(url)
+          .then(results => {
+            let location = new Location(results.body[0], city);
+            response.status(200).send(location);
+          }).catch(err => console.error(err));
+      }
+    });
 });
 
 app.get('/weather', (request, response) => {
@@ -57,7 +70,6 @@ app.get('/trails', (request, response) => {
     });
 });
 
-
 // Constructor Functions
 function Location(obj, city){
   this.search_query = city;
@@ -65,10 +77,12 @@ function Location(obj, city){
   this.latitude = obj.lat;
   this.longitude = obj.lon;
 }
+
 function Weather(obj){
   this.forecast = obj.summary;
   this.time = new Date(obj.time * 1000).toString().slice(0,15);
 }
+
 function Trail(obj){
   this.name = obj.name;
   this.location = obj.location;
