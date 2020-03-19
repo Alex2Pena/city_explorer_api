@@ -23,26 +23,32 @@ app.get('/location', (request, response) => {
   let city = request.query.city;
   console.log('😎', city);
   let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${city}&format=json`;
+
   superagent.get(url)
     .then(results => {
       // let geoData = results.body;
       let location = new Location(results.body[0], city);
       response.status(200).send(location);
-    }).catch(err => console.error(err));
+    }).catch(err => {
+      // send error to the backend
+      console.error(err);
+
+      // sends error to the front end with a status 500 - server error
+      response.status(500).send(err);
+    });
 });
 
 app.get('/weather', (request, response) => {
-  let weather = [];
   let lat = request.query.latitude;
   let lon = request.query.longitude;
   let url = `https://api.darksky.net/forecast/${process.env.DARK_SKY_API}/${lat},${lon}`;
+
   superagent.get(url)
     .then(results => {
       let wData = results.body.daily.data;
-      wData.map(day => {
-        let newDay = new Weather(day);
-        weather.push(newDay);
-      });
+
+      let weather = wData.map(day => new Weather(day));
+
       response.status(200).send(weather);
     });
 });
@@ -56,6 +62,11 @@ app.get('/trails', (request, response) => {
       response.status(200).send(dataObj);
     });
 });
+
+app.get('*', (request, response) => {
+  // 404 error no page found
+  response.status(404).send('nothing to see here');
+})
 
 
 // Constructor Functions
